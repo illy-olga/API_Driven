@@ -126,7 +126,8 @@ Version AWS
 
 ![i](i4.png)
 
-XXX
+### Configuration des credentials AWS
+
 ```bash
 aws configure set aws_access_key_id test
 aws configure set aws_secret_access_key test
@@ -374,9 +375,9 @@ make status
 
 ## Conclusion
 
-Ce projet démontre qu’une infrastructure cloud peut être entièrement pilotée par API, grâce aux services serverless et à l’automatisation.
+Ce projet démontre qu’une infrastructure cloud peut être entièrement pilotée par API grâce aux services serverless et à l’automatisation.
 
-Il constitue une base solide pour comprendre les principes modernes d’Infrastructure orientée API, et répond pleinement aux objectifs pédagogiques de l’atelier.
+Il constitue une base solide pour comprendre les principes modernes d’Infrastructure orientée API.
 
 
 
