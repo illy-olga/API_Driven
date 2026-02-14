@@ -7,6 +7,8 @@ L’architecture repose sur les services API Gateway et AWS Lambda, exécutés d
 
 L’objectif principal est de comprendre comment des services serverless peuvent orchestrer des ressources d’infrastructure de manière automatisée, reproductible et pilotée par API.
 
+![i](i0.png)
+
 ---
 
 ## Objectifs pédagogiques
@@ -78,7 +80,7 @@ sudo -i pip install --upgrade pip && python3 -m pip install localstack && export
 localstack start -d
 ```
 
-[image]
+![i](i1.png)
 
 
 ### Vérification des services
@@ -87,7 +89,7 @@ localstack start -d
 localstack status services
 ```
 
-[image]
+![i](i2.png)
 
 ### Récupération de l’endpoint AWS LocalStack
 
@@ -102,7 +104,7 @@ localstack status services
 https://studious-space-bassoon-rvq765455rr2jq9-4510.app.github.dev/
 ```
 
-[image]
+![i](i3.png)
 
 _Il est normal qu’aucune page web ne s’affiche : il s’agit d’une API AWS, pas d’une application web._
 
@@ -122,7 +124,7 @@ sudo ./aws/install
 
 Version AWS
 
-[image]
+![i](i4.png)
 
 XXX
 ```bash
@@ -131,7 +133,7 @@ aws configure set aws_secret_access_key test
 aws configure set region us-east-1
 ```
 
-[image]
+![i](i5.png)
 
 ### Fonction Lambda – lambda_function.py
 
@@ -268,6 +270,55 @@ echo "URL API : $ENDPOINT/restapis/$API_ID/prod/_user_request_/manage?instance_i
 
 ```
 
+### Création de l’instance EC2
+
+Commande exécutée : 
+```bash
+aws --endpoint-url=http://localhost:4566 ec2 run-instances \
+--image-id ami-df56ef98 \
+--count 1 \
+--instance-type t2.micro \
+--query 'Instances[0].InstanceId' \
+--output text
+```
+
+![i](i7.png)
+
+Cela confirme que l’instance EC2 a bien été créée.
+
+### Création et configuration de l’API Gateway
+
+Identifiant de l’API créé :
+```bash
+00sinohvm9
+```
+
+![i](i10.png)
+
+Cela permet à l’API Gateway de transmettre directement la requête à la Lambda.
+
+### Test de l’API – Arrêt de l’instance
+
+URL utilisée :
+```bash
+https://studious-space-bassoon-rvq765455rr2jq9-4566.app.github.dev/_aws/execute-api/00sinohvm9/prod/manage?instance_id=i-24a15ddce26bd3bd3&action=stop
+```
+![i](i8.png)
+
+Cela confirme que l’API fonctionne et pilote correctement l’instance EC2.
+
+### Vérification de LocalStack
+
+![i](i9.png)
+
+Résultat :
+
+* Les services EC2, Lambda et API Gateway sont en statut running
+
+* Cela confirme que l’environnement AWS simulé fonctionne correctement
+
+Cela signifie que l’infrastructure AWS simulée est prête.
+
 ### Pilotage via Makefile
 
 Le Makefile simplifie les actions courantes.
@@ -310,7 +361,22 @@ stop-infra:
 	@echo "\nFait."
 ```
 
+### Test avec le Makefile
 
+```bash
+make health
+make start-infra
+make stop-infra
+make status
+```
+
+![i](i11.png)
+
+## Conclusion
+
+Ce projet démontre qu’une infrastructure cloud peut être entièrement pilotée par API, grâce aux services serverless et à l’automatisation.
+
+Il constitue une base solide pour comprendre les principes modernes d’Infrastructure orientée API, et répond pleinement aux objectifs pédagogiques de l’atelier.
 
 
 
